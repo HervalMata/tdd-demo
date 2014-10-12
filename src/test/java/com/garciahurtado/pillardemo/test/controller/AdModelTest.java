@@ -12,6 +12,7 @@ import static org.junit.Assert.assertThat;
 
 import com.garciahurtado.pillardemo.model.AdModel;
 import com.garciahurtado.pillardemo.model.NewspaperModel;
+import com.garciahurtado.pillardemo.service.AdModelManager;
 
 public class AdModelTest extends TestCase {
 	@Rule
@@ -40,16 +41,16 @@ public class AdModelTest extends TestCase {
 	@Test
 	public void canAddNewspapers(){
 		AdModel ad = new AdModel("Test Campaign");
-		assertEqual(ad.getNewspapers().size(), 0);
+		assertEquals(ad.getNewspapers().size(), 0);
 		
 		ad.addNewspaper(newspaper1);
-		assertEqual(ad.getNewspapers().size(), 1);
+		assertEquals(ad.getNewspapers().size(), 1);
 		
 		ad.addNewspaper(newspaper2);
-		assertEqual(ad.getNewspapers().size(), 2);
+		assertEquals(ad.getNewspapers().size(), 2);
 			
 		ad.addNewspaper(newspaper3);
-		assertEqual(ad.getNewspapers().size(), 3);
+		assertEquals(ad.getNewspapers().size(), 3);
 	}
 		
 	@Test
@@ -57,7 +58,7 @@ public class AdModelTest extends TestCase {
 		AdModel ad = createAdModelForDB();
 		assertNull(ad.getId());
 		db.insert(ad);
-		assertEqual(ad.getId(), this.dbAdId);
+		assertEquals(ad.getId(), this.dbAdId);
 	}
 	
 	@Test
@@ -65,9 +66,9 @@ public class AdModelTest extends TestCase {
 		AdModel ad = db.findById(this.dbAdId);
 		
 		// Let's check that this is the correct object
-		assertEqual(ad.getId(), this.dbAdId);
-		assertEqual(ad.getName(), this.dbAdName);
-		assertEqual(ad.getNewspapers().size(), 3);
+		assertEquals(ad.getId(), this.dbAdId);
+		assertEquals(ad.getName(), this.dbAdName);
+		assertEquals(ad.getNewspapers().size(), 3);
 	}
 	
 	// Internal method for fixture creation

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertThat;
 
 import com.garciahurtado.pillardemo.model.AdModel;
 import com.garciahurtado.pillardemo.model.NewspaperModel;
+import com.garciahurtado.pillardemo.service.NewspaperManager;
 
 public class NewspaperModelTest extends TestCase {
 	@Rule
@@ -28,7 +29,7 @@ public class NewspaperModelTest extends TestCase {
 	@Test
 	public void testInvalidNameThrowsException(){
 		exception.expect(IllegalArgumentException.class);
-		Newspaper newspaper = new NewspaperModel("*&%^!#(");
+		NewspaperModel newspaper = new NewspaperModel("*&%^!#(");
 	}
 	
 	@Test
@@ -39,17 +40,17 @@ public class NewspaperModelTest extends TestCase {
 	
 	@Test
 	public void canAddAds(){
-		AdModel ad = new NewspaperModel("Test Newspaper");
-		assertEqual(ad.getAds().size(), 0);
+		NewspaperModel newspaper = new NewspaperModel("Test Newspaper");
+		assertEquals(newspaper.getAds().size(), 0);
 		
-		ad.addAd(ad1);
-		assertEqual(ad.getAds().size(), 1);
+		newspaper.addAd(ad1);
+		assertEquals(newspaper.getAds().size(), 1);
 		
-		ad.addAd(ad2);
-		assertEqual(ad.getAds().size(), 2);
+		newspaper.addAd(ad2);
+		assertEquals(newspaper.getAds().size(), 2);
 			
-		ad.addAd(ad3);
-		assertEqual(ad.getAds().size(), 3);
+		newspaper.addAd(ad3);
+		assertEquals(newspaper.getAds().size(), 3);
 	}
 		
 	@Test
@@ -57,17 +58,17 @@ public class NewspaperModelTest extends TestCase {
 		NewspaperModel newspaper = createNewspaperModelForDB();
 		assertNull(newspaper.getId());
 		db.insert(newspaper);
-		assertEqual(newspaper.getId(), this.dbNewspaperId);
+		assertEquals(newspaper.getId(), this.dbNewspaperId);
 	}
 	
 	@Test
 	public void canFindNewspaperInDb(){
-		NewspaperModel newspaper = db.findById(this.dbAdId);
+		NewspaperModel newspaper = db.findById(this.dbNewspaperId);
 		
 		// Let's check that this is the correct object
-		assertEqual(newspaper.getId(), this.dbNewspaperId);
-		assertEqual(newspaper.getName(), this.dbNewspaperName);
-		assertEqual(newspaper.getAds().size(), 3);
+		assertEquals(newspaper.getId(), this.dbNewspaperId);
+		assertEquals(newspaper.getName(), this.dbNewspaperName);
+		assertEquals(newspaper.getAds().size(), 3);
 	}
 	
 	// Internal method for fixture creation
