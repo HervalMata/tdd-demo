@@ -5,6 +5,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+    <!-- Web App Beans -->
    <bean id="company1" class="com.garciahurtado.pillardemo.models.Company">
        <property name="name" value="Rogers Telecom"/>
    </bean>
