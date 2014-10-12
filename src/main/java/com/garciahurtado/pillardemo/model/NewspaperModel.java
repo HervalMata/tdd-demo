@@ -1,6 +1,6 @@
-package com.garciahurtado.pillardemo.models;
+package com.garciahurtado.pillardemo.model;
 
-public class CompanyModel {
+public class NewspaperModel {
 	private String name;
 
 	public void setName(String message){
@@ -8,7 +8,6 @@ public class CompanyModel {
 	}
 	
 	public String getName(){
-		System.out.println("Company name is: " + this.name);
 		return this.name;
 	}
 }
