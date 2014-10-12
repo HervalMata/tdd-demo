@@ -39,7 +39,7 @@ public class AdModelTest extends TestCase {
 	}
 	
 	@Test
-	public void canAddNewspapers(){
+	public void testCanAddNewspapers(){
 		AdModel ad = new AdModel("Test Campaign");
 		assertEquals(ad.getNewspapers().size(), 0);
 		
@@ -54,7 +54,7 @@ public class AdModelTest extends TestCase {
 	}
 		
 	@Test
-	public void canSaveAdToDb(){
+	public void testCanSaveAdToDb(){
 		AdModel ad = createAdModelForDB();
 		assertNull(ad.getId());
 		db.insert(ad);
@@ -62,7 +62,7 @@ public class AdModelTest extends TestCase {
 	}
 	
 	@Test
-	public void canFindAdInDb(){
+	public void testCanFindAdInDb(){
 		AdModel ad = db.findById(this.dbAdId);
 		
 		// Let's check that this is the correct object
