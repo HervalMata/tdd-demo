@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <bean id="company1" class="com.garciahurtado.pillardemo.models.Company">
+       <property name="name" value="Rogers Telecom"/>
+   </bean>
+   <bean id="company2" class="com.garciahurtado.pillardemo.models.Company">
+       <property name="name" value="Paco Freight Co."/>
+   </bean>
+      <bean id="company3" class="com.garciahurtado.pillardemo.models.Company">
+       <property name="name" value="Univision"/>
+   </bean>
+   
+   <!--  Configure Jetty embedded servlet container -->
+   <bean id="contexts" class="org.eclipse.jetty.server.handler.ContextHandlerCollection"/>
+    <bean id="server" name="Main" class="org.eclipse.jetty.server.Server" init-method="start" destroy-method="stop">
+        <constructor-arg>
+            <bean id="threadPool" class="org.eclipse.jetty.util.thread.QueuedThreadPool">
+                <property name="minThreads" value="10"/>
+                <property name="maxThreads" value="50"/>
+            </bean>
+        </constructor-arg>
+        <property name="connectors">
+            <list>
+                <bean id="connector" class="org.eclipse.jetty.server.ServerConnector">
+                    <constructor-arg ref="server"/>
+                    <property name="port" value="8080"/>
+                </bean>
+            </list>
+        </property>
+        <property name="handler">
+            <bean id="handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+            <property name="handlers">
+                    <list>
+                        <ref bean="contexts"/>
+                        <bean id="defaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler"/>
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="beans">
+            <list>
+                <bean id="deploymentManager" class="org.eclipse.jetty.deploy.DeploymentManager">
+                    <property name="contexts" ref="contexts"/>
+                    <property name="appProviders">
+                        <list>
+                            <bean id="webAppProvider" class="org.eclipse.jetty.deploy.providers.WebAppProvider">
+                                <property name="monitoredDirName" value="webapps"/>
+                                <property name="scanInterval" value="1"/>
+                                <property name="extractWars" value="true"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+   
+</beans>
