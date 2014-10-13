@@ -24,7 +24,7 @@ public class AdModel {
 		// TODO: externalize name regexp into custom validator 
 		// Only Alphanumeric, space and dash are allowed
 		if(!name.matches("^[a-zA-Z0-9-\\s]*$")){
-			throw new IllegalArgumentException("The name can only contain alphanumeric characters, spaces or dashes");
+			throw new IllegalArgumentException("The ad name can only contain alphanumeric characters, spaces or dashes");
 		}
 		this.name = name;
 		this.newspapers = new ArrayList<NewspaperModel>();

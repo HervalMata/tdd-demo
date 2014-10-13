@@ -1,17 +1,13 @@
 package com.garciahurtado.pillardemo.service;
 
+import java.util.List;
+
 import com.garciahurtado.pillardemo.model.NewspaperModel;
 
-public class NewspaperService {
-
-	public void insert(NewspaperModel newspaper) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public NewspaperModel findById(int dbNewspaperId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+public interface NewspaperService {
+    public NewspaperModel create(NewspaperModel shop);
+    public NewspaperModel delete(Long id) throws Exception; // TODO: add Custom EntityNotFoundException
+    public List<NewspaperModel> findAll();
+    public NewspaperModel update(NewspaperModel shop) throws Exception;
+    public NewspaperModel findById(Long id);
 }
