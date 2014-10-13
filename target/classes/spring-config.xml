@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<context:component-scan base-package="com.garciahurtado.pillardemo.service" />
+
+	<!-- Persistence / JPA / Hibernate -->
+
+	<jpa:repositories base-package="com.garciahurtado.pillardemo.repository" />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="myPersistenceUnit" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.garciahurtado.pillardemo" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url" value="jdbc:hsqldb:mem:pillardemo" />
+		<property name="username" value="username" />
+		<property name="password" value="password" />
+	</bean>
+
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+   </bean>
+
+	<!-- Configure Jetty embedded servlet container -->
+	<beans profile="deploy">
+		<bean id="contexts"
+			class="org.eclipse.jetty.server.handler.ContextHandlerCollection" />
+		<bean id="server" name="Main" class="org.eclipse.jetty.server.Server"
+			init-method="start" destroy-method="stop">
+			<constructor-arg>
+				<bean id="threadPool" class="org.eclipse.jetty.util.thread.QueuedThreadPool">
+					<property name="minThreads" value="10" />
+					<property name="maxThreads" value="50" />
+				</bean>
+			</constructor-arg>
+			<property name="connectors">
+				<list>
+					<bean id="connector" class="org.eclipse.jetty.server.ServerConnector">
+						<constructor-arg ref="server" />
+						<property name="port" value="8080" />
+					</bean>
+				</list>
+			</property>
+			<property name="handler">
+				<bean id="handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+					<property name="handlers">
+						<list>
+							<ref bean="contexts" />
+							<bean id="defaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler" />
+						</list>
+					</property>
+				</bean>
+			</property>
+			<property name="beans">
+				<list>
+					<bean id="deploymentManager" class="org.eclipse.jetty.deploy.DeploymentManager">
+						<property name="contexts" ref="contexts" />
+						<property name="appProviders">
+							<list>
+								<bean id="webAppProvider"
+									class="org.eclipse.jetty.deploy.providers.WebAppProvider">
+									<property name="monitoredDirName" value="webapps" />
+									<property name="scanInterval" value="1" />
+									<property name="extractWars" value="true" />
+								</bean>
+							</list>
+						</property>
+					</bean>
+				</list>
+			</property>
+
+		</bean>
+	</beans>
+</beans>

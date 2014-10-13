@@ -8,20 +8,20 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import com.garciahurtado.pillardemo.model.AdModel;
 import com.garciahurtado.pillardemo.model.NewspaperModel;
-import com.garciahurtado.pillardemo.service.NewspaperManager;
+import com.garciahurtado.pillardemo.service.NewspaperService;
 
-public class NewspaperModelTest extends TestCase {
+public class NewspaperModelTest {
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
 	@Mock AdModel ad1;
 	@Mock AdModel ad2;
 	@Mock AdModel ad3;
-	@Mock NewspaperManager db;
+	@Mock NewspaperService db;
 	
 	int dbNewspaperId = 777; // Mock AdId used to save and retrieve from DB
 	String dbNewspaperName = "TEST - DB Mock Newspaper"; //
@@ -34,8 +34,8 @@ public class NewspaperModelTest extends TestCase {
 	
 	@Test
 	public void testCanCreate(){
-		NewspaperModel news = new NewspaperModel("Test Campaign");
-		assertThat(news, instanceOf(NewspaperModel.class));
+		NewspaperModel newspaper = new NewspaperModel("Test Campaign");
+		assertThat(newspaper, instanceOf(NewspaperModel.class));
 	}
 	
 	@Test
