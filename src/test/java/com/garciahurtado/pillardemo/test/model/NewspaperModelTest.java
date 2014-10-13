@@ -1,4 +1,4 @@
-package com.garciahurtado.pillardemo.test.controller;
+package com.garciahurtado.pillardemo.test.model;
 
 import javax.annotation.Resource;
 

@@ -12,6 +12,7 @@
 	</parent>
 
 	<dependencies>
+	
 		<!-- AOP -->
 		<dependency>
 			<groupId>org.aspectj</groupId>

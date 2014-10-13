@@ -12,7 +12,10 @@
 	http://www.springframework.org/schema/data/jpa
     http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-	<context:component-scan base-package="com.garciahurtado.pillardemo.service" />
+	<context:component-scan base-package="com.garciahurtado.pillardemo">
+		<!-- <context:exclude-filter expression="org.springframework.stereotype.Controller"
+			type="annotation" /> -->
+	</context:component-scan>
 
 	<!-- Persistence / JPA / Hibernate -->
 
@@ -46,7 +49,16 @@
 
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-   </bean>
+	</bean>
+
+	<!-- Views -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 
 	<!-- Configure Jetty embedded servlet container -->
 	<beans profile="deploy">
