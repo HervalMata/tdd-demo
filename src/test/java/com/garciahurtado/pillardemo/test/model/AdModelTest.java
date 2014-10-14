@@ -1,5 +1,7 @@
 package com.garciahurtado.pillardemo.test.model;
 
+import java.util.Collection;
+
 import javax.annotation.Resource;
 
 import org.junit.Before;
@@ -18,6 +20,7 @@ import static org.junit.Assert.*;
 import com.garciahurtado.pillardemo.model.AdModel;
 import com.garciahurtado.pillardemo.model.NewspaperModel;
 import com.garciahurtado.pillardemo.service.AdService;
+import com.garciahurtado.pillardemo.service.NewspaperService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
@@ -26,11 +29,8 @@ public class AdModelTest {
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
-	@Mock NewspaperModel newspaper1;
-	@Mock NewspaperModel newspaper2;
-	@Mock NewspaperModel newspaper3;
-	
-	@Resource private AdService db;
+	@Resource private AdService adDb;
+	@Resource private NewspaperService newsDb;
 	
 	String dbAdName = "TEST - DB Mock Ad Campaign"; //
 	
@@ -52,21 +52,21 @@ public class AdModelTest {
 		AdModel ad = new AdModel("Test Campaign");
 		assertEquals(ad.getNewspapers().size(), 0);
 		
-		ad.addNewspaper(newspaper1);
+		ad.addNewspaper(createNewspaper("Newspaper 1"));
 		assertEquals(ad.getNewspapers().size(), 1);
 		
-		ad.addNewspaper(newspaper2);
+		ad.addNewspaper(createNewspaper("Newspaper 2"));
 		assertEquals(ad.getNewspapers().size(), 2);
 			
-		ad.addNewspaper(newspaper3);
+		ad.addNewspaper(createNewspaper("Newspaper 3"));
 		assertEquals(ad.getNewspapers().size(), 3);
 	}
 		
 	@Test
 	public void testCanSaveAdToDb() throws Exception{
-		AdModel ad = createAdModelForDB(this.dbAdName);
+		AdModel ad = createAd(this.dbAdName);
 		assertNull(ad.getId());
-		db.create(ad);
+		adDb.create(ad);
 		assertEquals(ad.getName(), this.dbAdName);
 		
 		// TODO: Insert code to test for proper "insert" method called in data service class
@@ -74,22 +74,40 @@ public class AdModelTest {
 	
 	@Test
 	public void testCanFindAdInDb() throws Exception{
-		AdModel savedAd = createAdModelForDB(this.dbAdName);
-		db.create(savedAd);
-		AdModel foundAd = db.findById(savedAd.getId());
+		AdModel savedAd = createAd(this.dbAdName);
+	
+		adDb.create(savedAd);
+		
+		AdModel foundAd = adDb.findById(savedAd.getId());
+		Collection<NewspaperModel> newspapers = foundAd.getNewspapers();
 		
 		// Let's check that this is the correct object
-		assertEquals(foundAd.getName(), this.dbAdName);
-		assertEquals(foundAd.getNewspapers().size(), 3);
+		assertEquals(this.dbAdName, foundAd.getName());
+		assertEquals(3, newspapers.size());
 	}
 	
-	// Internal method for fixture creation
-	private AdModel createAdModelForDB(String adName){
+
+	/**
+	 * Create Ad fixture
+	 * @param name
+	 * @return
+	 */
+	private AdModel createAd(String adName){
 		AdModel ad = new AdModel(adName);
-		ad.addNewspaper(newspaper1);
-		ad.addNewspaper(newspaper2);
-		ad.addNewspaper(newspaper3);
+		ad.addNewspaper(createNewspaper("Newspaper 1"));
+		ad.addNewspaper(createNewspaper("Newspaper 2"));
+		ad.addNewspaper(createNewspaper("Newspaper 3"));
 		
 		return ad;
+	}
+	
+	/**
+	 * Create Newspaper fixture
+	 * @param name
+	 * @return
+	 */
+	private NewspaperModel createNewspaper(String name){
+		NewspaperModel newspaper = new NewspaperModel(name);
+		return newspaper;
 	}
 }

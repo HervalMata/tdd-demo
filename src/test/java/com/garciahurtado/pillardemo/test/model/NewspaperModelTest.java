@@ -1,5 +1,7 @@
 package com.garciahurtado.pillardemo.test.model;
 
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 import junit.framework.TestCase;
@@ -52,21 +54,23 @@ public class NewspaperModelTest {
 	@Test
 	public void testCanAddAds(){
 		NewspaperModel newspaper = new NewspaperModel("Test Newspaper");
-		assertEquals(newspaper.getAds().size(), 0);
+		Set<AdModel> ads = newspaper.getAds();
+		assertEquals(ads.size(), 0);
 		
-		newspaper.addAd(ad1);
-		assertEquals(newspaper.getAds().size(), 1);
+		newspaper.addAd(createAd("Ad 1"));
 		
-		newspaper.addAd(ad2);
-		assertEquals(newspaper.getAds().size(), 2);
+		assertEquals(ads.size(), 1);
+		
+		newspaper.addAd(createAd("Ad 2"));
+		assertEquals(ads.size(), 2);
 			
-		newspaper.addAd(ad3);
-		assertEquals(newspaper.getAds().size(), 3);
+		newspaper.addAd(createAd("Ad 3"));
+		assertEquals(ads.size(), 3);
 	}
 		
 	@Test
 	public void testCanSaveNewspaperToDb(){
-		NewspaperModel newspaper = createNewspaperModelForDB(this.dbNewspaperName);
+		NewspaperModel newspaper = createNewspaper(this.dbNewspaperName);
 		assertNull(newspaper.getId());
 		db.create(newspaper);
 		assertEquals(newspaper.getName(), this.dbNewspaperName);
@@ -74,7 +78,7 @@ public class NewspaperModelTest {
 	
 	@Test
 	public void testCanFindNewspaperInDb(){
-		NewspaperModel savedNewspaper = createNewspaperModelForDB(this.dbNewspaperName);
+		NewspaperModel savedNewspaper = createNewspaper(this.dbNewspaperName);
 		db.create(savedNewspaper);
 		NewspaperModel foundNewspaper = db.findById(savedNewspaper.getId());
 		
@@ -85,13 +89,27 @@ public class NewspaperModelTest {
 		
 	}
 	
-	// Internal method for fixture creation
-	private NewspaperModel createNewspaperModelForDB(String name){
+	/**
+	 * Convenient method to create Newspaper fixtures
+	 * @param name
+	 * @return
+	 */
+	private NewspaperModel createNewspaper(String name){
 		NewspaperModel news = new NewspaperModel(name);
-		news.addAd(ad1);
-		news.addAd(ad2);
-		news.addAd(ad3);
+		news.addAd(createAd("Ad 1"));
+		news.addAd(createAd("Ad 2"));
+		news.addAd(createAd("Ad 3"));
 		
 		return news;
+	}
+
+	/**
+	 * Convenient method to create Ad fixtures
+	 * @param name
+	 * @return
+	 */
+	private AdModel createAd(String name) {
+		AdModel ad = new AdModel(name);
+		return ad;
 	}
 }

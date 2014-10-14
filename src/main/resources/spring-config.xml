@@ -3,6 +3,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/data/jpa
     http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
     http://www.springframework.org/schema/context
@@ -10,15 +11,23 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/data/jpa
-    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<context:component-scan base-package="com.garciahurtado.pillardemo">
-		<!-- <context:exclude-filter expression="org.springframework.stereotype.Controller"
+		<!-- <context:exclude-filter expression="org.springframework.stereotype.Controller" 
 			type="annotation" /> -->
 	</context:component-scan>
+	
 
 	<!-- Persistence / JPA / Hibernate -->
-
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" name="TransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"></property>
+    </bean>
+        
 	<jpa:repositories base-package="com.garciahurtado.pillardemo.repository" />
 
 	<bean id="entityManagerFactory"
@@ -48,19 +57,26 @@
 	</bean>
 
 
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-	</bean>
-
 	<!-- Views -->
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
+	<bean id="templateResolver"
+		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<property name="prefix" value="/WEB-INF/templates/" />
+		<property name="suffix" value=".html" />
+        <property name="templateMode" value="HTML5" />
+        <property name="cacheable" value="false" /> <!-- Development only -->
 	</bean>
 
-	<!-- Configure Jetty embedded servlet container -->
+	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
+	</bean>
+
+	<bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+	</bean>
+
+
+
+	<!-- Configure embedded servlet container -->
 	<beans profile="deploy">
 		<bean id="contexts"
 			class="org.eclipse.jetty.server.handler.ContextHandlerCollection" />

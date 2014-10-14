@@ -1,13 +1,20 @@
 package com.garciahurtado.pillardemo.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,7 +27,9 @@ public class NewspaperModel {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	private ArrayList<AdModel> ads;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "ads_to_newspapers", joinColumns = { @JoinColumn(name ="newspapers_id") }, inverseJoinColumns = { @JoinColumn(name = "ads_id") })
+	private Set<AdModel> ads;
 	
 	public NewspaperModel(){
 		
@@ -33,10 +42,10 @@ public class NewspaperModel {
 			throw new IllegalArgumentException("The newspaper name can only contain alphanumeric characters, spaces or dashes");
 		}
 		this.name = name;
-		this.ads = new ArrayList<AdModel>();
+		this.ads = new HashSet<AdModel>();
 	}
 
-	public List<AdModel> getAds() {
+	public Set<AdModel> getAds() {
 		return ads;
 	}
 	

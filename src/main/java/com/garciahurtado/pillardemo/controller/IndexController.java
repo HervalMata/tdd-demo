@@ -2,8 +2,11 @@ package com.garciahurtado.pillardemo.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
@@ -21,13 +24,7 @@ public class IndexController {
 	
 	@RequestMapping("/")
 	public String index(){
-		logger.info("Index controller");
+		logger.info("In Index controller");
 		return "index";
-	}
-	
-	@RequestMapping("/ad")
-	public String adList(){
-		return "List of ads";
-		
 	}
 }

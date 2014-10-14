@@ -1,0 +1,56 @@
+<html>
+  <head>
+  	<title>Acme Ad Manager</title>
+  	<meta name="description" content="A test application to showcase TDD via Spring, Thymeleaf, Hibernate and jUnit"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-slate.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/app.css"/>
+  </head>
+  <body>
+    <h1>Acme Ad Manager</h1>
+    <h2>Ad List</h2>
+    
+    
+    <table>
+      <tr>
+        <th>Ad Name</th>
+        <th>Newspapers</th>
+      </tr>
+      <tr th:each="ad : ${ads}">
+        <td th:text="${ad.name}">
+          <a href="/ad/${ad.id}">[NAME]</a>
+        </td>
+        <td>
+          <ul th:each="newspaper : ${ad.newspapers}">
+            <li th:text="${newspaper.name}">
+              <a href="/newspaper/${newspaper.id}">[NEWSPAPER]</a>
+            </li>
+          </ul>
+
+        </td>
+      </tr>
+    </table>
+    
+	<hr/>
+	
+	<th:block layout:fragment="content" th:if="${error}">
+		<span th:text="*{error}?: ''" class="error"></span>
+	</th:block>
+	
+	<h3>Create New Ad</h3>
+	
+	<form action="/ad/create" method="POST">
+		<label for="name">Name</label> <input name="name"/>
+		<input type="submit" value="create" class="button"/>
+
+    <br/>
+    <label for="newspapers">Newspapers</label>
+    <select name="newspapers" rows="10" multiple="true">
+      <option 
+        th:each="newspaper : ${newspapers}"
+        th:text="${newspaper.name}"
+        th:value="${newspaper.id}">[NEWSPAPERS]</option>
+    </select>
+	</form>
+  </body>
+</html>

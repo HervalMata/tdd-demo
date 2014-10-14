@@ -1,8 +1,36 @@
 package com.garciahurtado.pillardemo.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import javax.persistence.*;
+import java.util.Set;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 
 @Entity
 @Table(name="ads")
@@ -14,7 +42,9 @@ public class AdModel {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	private ArrayList<NewspaperModel> newspapers;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "ads_to_newspapers", joinColumns = { @JoinColumn(name ="ads_id") }, inverseJoinColumns = { @JoinColumn(name = "newspapers_id") })
+	private Set<NewspaperModel> newspapers = new HashSet<NewspaperModel>();
 	
 	public AdModel(){
 		
@@ -27,11 +57,11 @@ public class AdModel {
 			throw new IllegalArgumentException("The ad name can only contain alphanumeric characters, spaces or dashes");
 		}
 		this.name = name;
-		this.newspapers = new ArrayList<NewspaperModel>();
 	}
 
-	public List<NewspaperModel> getNewspapers() {
-		return newspapers;
+	public Set<NewspaperModel> getNewspapers() {
+		// Defensive copy to avoid external interference with collection
+		return new HashSet<NewspaperModel>(newspapers);
 	}
 
 	public void addNewspaper(NewspaperModel newspaper) {

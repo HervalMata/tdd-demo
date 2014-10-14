@@ -1,25 +1,43 @@
 package com.garciahurtado.pillardemo.service;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
 
 import com.garciahurtado.pillardemo.model.AdModel;
+import com.garciahurtado.pillardemo.model.NewspaperModel;
 import com.garciahurtado.pillardemo.repository.AdRepository;
+import com.garciahurtado.pillardemo.repository.NewspaperRepository;
 
 @Service
 public class AdServiceImpl implements AdService {
 
 	@Resource
     private AdRepository adRepository;
+	
+	@Resource
+	private NewspaperRepository newsRepository;
 
 	@Override
 	public AdModel create(AdModel ad) {
-		return adRepository.save(ad);
+		// Save the newspapers first
+		Collection<NewspaperModel> newspapers = ad.getNewspapers();
+		for (NewspaperModel news : newspapers) {
+			newsRepository.save(news);
+		}
+		
+		AdModel model = adRepository.save(ad);
+		return model;
 	}
 
 	@Override
