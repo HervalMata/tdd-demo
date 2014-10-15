@@ -23,7 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
@@ -37,10 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@SpringApplicationConfiguration(locations = { "classpath:spring-config.xml" })
-//@ContextConfiguration(locations = { "classpath:spring-config.xml" })
-//@ActiveProfiles("test")
+@ContextConfiguration(locations = { "classpath:spring-config.xml" })
+@WebAppConfiguration("classpath:")
+@ActiveProfiles("test")
 public class IndexControllerTest {
 	@Resource
 	private WebApplicationContext webApplicationContext;
@@ -54,34 +55,28 @@ public class IndexControllerTest {
 //		mvc = MockMvcBuilders.standaloneSetup(new IndexController())
 //                 .setViewResolvers(viewResolver())
 //                 .build();
-		 
+//		
 		mvc = MockMvcBuilders
 				.webAppContextSetup(webApplicationContext)
 				.build();
 	}
 
+	/**
+	 * Check that all the resource links are present in the index page
+	 */
 	@Test
 	public void testIndexIncludesNavLinks() throws Exception {
 		
-		MvcResult result = mvc.perform(get("/").accept("*/*"))
-				.andDo(print())
+		mvc.perform(get("/").accept("*/*"))
 				.andExpect(status().isOk())
-				.andReturn();
-		
-		String content = result.getResponse().getContentAsString();
-
-//		logger.warn("======== Result: " + content);
-//
-//		// Check that all the RESTful links to resources are present in the
-//		// index page
-		assertThat(content, containsString("href=\"/ad/\""));
-		assertThat(content, containsString("href=\"/newspaper/\""));
+				.andExpect(content().string(
+						containsString("href=\"/ad/\"")))
+				.andExpect(content().string(
+						containsString("href=\"/newspaper/\"")));
 	}
 
-	private InternalResourceViewResolver viewResolver() {
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setPrefix("/WEB-INF/templates/");
-		viewResolver.setSuffix(".html");
+	private ViewResolver viewResolver() {
+		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 		return viewResolver;
 	}
 }

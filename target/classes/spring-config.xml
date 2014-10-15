@@ -15,11 +15,7 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<context:component-scan base-package="com.garciahurtado.pillardemo">
-		<!-- <context:exclude-filter expression="org.springframework.stereotype.Controller" 
-			type="annotation" /> -->
-	</context:component-scan>
-	
+	<context:component-scan base-package="com.garciahurtado.pillardemo"/>
 
 	<!-- Persistence / JPA / Hibernate -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
@@ -60,10 +56,10 @@
 	<!-- Views -->
 	<bean id="templateResolver"
 		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
-		<property name="prefix" value="/WEB-INF/templates/" />
+		<property name="prefix" value="/templates/" />
 		<property name="suffix" value=".html" />
         <property name="templateMode" value="HTML5" />
-        <property name="cacheable" value="false" /> <!-- Development only -->
+        <property name="cacheable" value="false" /> <!-- Development only -->   
 	</bean>
 
 	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
@@ -78,8 +74,6 @@
 
 	<!-- Configure embedded servlet container -->
 	<beans profile="deploy">
-		<bean id="contexts"
-			class="org.eclipse.jetty.server.handler.ContextHandlerCollection" />
 		<bean id="server" name="Main" class="org.eclipse.jetty.server.Server"
 			init-method="start" destroy-method="stop">
 			<constructor-arg>
@@ -96,16 +90,7 @@
 					</bean>
 				</list>
 			</property>
-			<property name="handler">
-				<bean id="handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
-					<property name="handlers">
-						<list>
-							<ref bean="contexts" />
-							<bean id="defaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler" />
-						</list>
-					</property>
-				</bean>
-			</property>
+			
 			<property name="beans">
 				<list>
 					<bean id="deploymentManager" class="org.eclipse.jetty.deploy.DeploymentManager">
