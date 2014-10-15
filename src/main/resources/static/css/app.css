@@ -44,6 +44,8 @@ h1 {
   font-weight: 400;
   font-family: 'Montserrat', 'sans-serif', 'Verdana', sans-serif;
   margin-bottom: 20px;
+  text-shadow: 0px 3px black;
+  
 }
 
 h1 {
@@ -59,26 +61,47 @@ h1:before {
 }
 
 input, select, button {
-	color: #000;
+  color: #000;
 }
 
 .error {
-	background-color: #fcc;
-	color: black;
-	padding: 10px;
-	border: 3px solid red;
+  background-color: #fcc;
+  color: black;
+  padding: 10px;
+  border: 3px solid red;
 }
 
+/* Tables -------------------------------------*/
+
 table {
-	width: 50%;
-	padding: 4px;
+  width: 50%;
+  padding: 4px;
 }
 
 table th,
 table td {
-	padding: 5px;
+  padding: 5px;
 }
 
 table th {
-	background-color: #555;
+  background-color: #555;
+}
+
+
+/* Forms ----------------------------------*/
+
+label {
+  clear:left;
+  float: left;
+  display: block;
+  width: 8em;
+}
+
+select, input[type="text"] {
+  width: 12em;
+}
+
+select, input, button {
+  float: left;
+  margin-bottom: 0.5em;
 }

@@ -54,7 +54,7 @@ public class IndexControllerTest {
 //		mvc = MockMvcBuilders.standaloneSetup(new IndexController())
 //                 .setViewResolvers(viewResolver())
 //                 .build();
-//		 
+		 
 		mvc = MockMvcBuilders
 				.webAppContextSetup(webApplicationContext)
 				.build();
@@ -68,8 +68,7 @@ public class IndexControllerTest {
 				.andExpect(status().isOk())
 				.andReturn();
 		
-		MockHttpServletResponse response = result.getResponse();
-		String content = response.getContentAsString();
+		String content = result.getResponse().getContentAsString();
 
 //		logger.warn("======== Result: " + content);
 //
@@ -81,7 +80,7 @@ public class IndexControllerTest {
 
 	private InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setPrefix("/templates/");
+		viewResolver.setPrefix("/WEB-INF/templates/");
 		viewResolver.setSuffix(".html");
 		return viewResolver;
 	}

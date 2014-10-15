@@ -40,19 +40,24 @@ public class AdController {
 	/**
 	 * Handle creation of a new Ad object via POST
 	 * @param name Name of the new Ad
+	 * @param newspapers (optional) List of Newspapers to associate with this Ad
 	 */
 	@RequestMapping(value="/ad/create", method=RequestMethod.POST)
 	public String create(
 			@RequestParam("name") String name, 
-			@RequestParam(value="newspapers") String[] newspapers,
+			@RequestParam(value="newspapers", required = false) String[] newspapers,
 			Model model){
 		
+		// TODO: Use validators!
 		try{
 			AdModel ad = new AdModel(name);
-			for (String newspaperId : newspapers) {
-				Long id = Long.parseLong(newspaperId, 10);
-		    	ad.addNewspaper(newsFinder.findById( id ));
-		    	logger.info("Added Newspaper to Ad");
+			
+			if(newspapers != null){
+				for (String newspaperId : newspapers) {
+					Long id = Long.parseLong(newspaperId, 10);
+			    	ad.addNewspaper(newsFinder.findById( id ));
+			    	logger.info("Added Newspaper to Ad");
+				}
 			}
 			
 			// Persist the newly created Ad

@@ -10,20 +10,20 @@
     <h1>Acme Ad Manager</h1>
     <h2>Ad List</h2>
     
-    
-    <table>
+    <!-- Only show the table if there are Ads in the app -->
+    <table th:if="${not #lists.isEmpty(ads)}">
       <tr>
         <th>Ad Name</th>
         <th>Newspapers</th>
       </tr>
       <tr th:each="ad : ${ads}">
-        <td th:text="${ad.name}">
-          <a href="/ad/${ad.id}">[NAME]</a>
+        <td>
+          <a th:href="@{/ad/__${ad.id}__}" th:text="${ad.name}">[NAME]</a>
         </td>
         <td>
           <ul th:each="newspaper : ${ad.newspapers}">
-            <li th:text="${newspaper.name}">
-              <a href="/newspaper/${newspaper.id}">[NEWSPAPER]</a>
+            <li>
+              <a th:href="@{/newspaper/__${newspaper.id}__}" th:text="${newspaper.name}">[NEWSPAPER]</a>
             </li>
           </ul>
 
@@ -31,6 +31,7 @@
       </tr>
     </table>
     
+    <span th:if="${#lists.isEmpty(ads)}" class="info">There are no ads. Please create one.</span>
 	<hr/>
 	
 	<th:block layout:fragment="content" th:if="${error}">
@@ -40,10 +41,9 @@
 	<h3>Create New Ad</h3>
 	
 	<form action="/ad/create" method="POST">
-		<label for="name">Name</label> <input name="name"/>
-		<input type="submit" value="create" class="button"/>
+		<label for="name">Name</label> 
+      <input name="name" type="text" />
 
-    <br/>
     <label for="newspapers">Newspapers</label>
     <select name="newspapers" rows="10" multiple="true">
       <option 
@@ -51,6 +51,10 @@
         th:text="${newspaper.name}"
         th:value="${newspaper.id}">[NEWSPAPERS]</option>
     </select>
+
+    <br/>
+    <label for="submit"/>
+    <input type="submit" value="Create" id="submit" class="button btn btn-primary"/>
 	</form>
   </body>
 </html>
