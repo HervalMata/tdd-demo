@@ -41,7 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring-config.xml" })
 @WebAppConfiguration("classpath:")
-@ActiveProfiles("test")
 public class IndexControllerTest {
 	@Resource
 	private WebApplicationContext webApplicationContext;
@@ -51,14 +50,7 @@ public class IndexControllerTest {
 
 	@Before
 	public void setUp() {
-//		MockitoAnnotations.initMocks(this);
-//		mvc = MockMvcBuilders.standaloneSetup(new IndexController())
-//                 .setViewResolvers(viewResolver())
-//                 .build();
-//		
-		mvc = MockMvcBuilders
-				.webAppContextSetup(webApplicationContext)
-				.build();
+		mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
 	/**
@@ -73,10 +65,5 @@ public class IndexControllerTest {
 						containsString("href=\"/ad/\"")))
 				.andExpect(content().string(
 						containsString("href=\"/newspaper/\"")));
-	}
-
-	private ViewResolver viewResolver() {
-		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-		return viewResolver;
 	}
 }
