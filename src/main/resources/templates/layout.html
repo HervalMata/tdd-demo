@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      th:include="layout :: page">
+      th:fragment="page">
   <head>
   	<title>Acme Ad Manager</title>
   	<meta name="description" content="A test application to showcase TDD via Spring, Thymeleaf, Hibernate and jUnit"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-slate.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-slate.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/app.css"/>
   </head>
+
   <body>
+
+  <a href="/" class="home">
+    <img src="/images/home.png"/>
+  </a>
+
     <h1>Acme Ad Manager</h1>
 
-    <div th:fragment="content">
-      <p>Please select your action</p>
-      <ul>
-      	<li><a href="/ad/">View Ads</a></li>
-      	<li><a href="/newspaper/">View Newspapers</a></li>
-      </ul>
+    <div th:include="this :: content">
+      <p>Sample content for the page layout</p>
     </div>
+
   </body>
 </html>

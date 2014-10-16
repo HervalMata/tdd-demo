@@ -1,4 +1,7 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout :: page">
+
   <head>
   	<title>Acme Ad Manager</title>
   	<meta name="description" content="A test application to showcase TDD via Spring, Thymeleaf, Hibernate and jUnit"/>
@@ -7,59 +10,61 @@
     <link rel="stylesheet" type="text/css" href="/css/app.css"/>
   </head>
   <body>
-    <h1>Acme Ad Manager</h1>
     
-    <!-- hide list of newspapers if we received an error -->
-    <th:block th:if="${#strings.isEmpty(error)}">
-      <h2>Newspaper List</h2>
+    <div th:fragment="content">
 
-      <!-- Only show the table if there are newspapers -->
-      <table th:if="${not #lists.isEmpty(newspapers)}">
-        <tr>
-          <th>Newspaper</th>
-          <th>Ads</th>
-        </tr>
-        <tr th:each="newspaper : ${newspapers}">
-          <td>
-            <a th:href="@{/newspaper/__${newspaper.id}__}" th:text="${newspaper.name}">[NAME]</a>
-          </td>
-          <td>
-            <ul th:each="ad : ${newspaper.ads}">
-              <li>
-                <a th:href="@{/ad/__${ad.id}__}" th:text="${ad.name}">[AD]</a>
-              </li>
-            </ul>
+      <!-- hide list of newspapers if we received an error -->
+      <th:block th:if="${#strings.isEmpty(error)}">
+        <h2>Newspaper List</h2>
 
-          </td>
-        </tr>
-      </table>
+        <!-- Only show the table if there are newspapers -->
+        <table th:if="${not #lists.isEmpty(newspapers)}">
+          <tr>
+            <th>Newspaper</th>
+            <th>Ads</th>
+          </tr>
+          <tr th:each="newspaper : ${newspapers}">
+            <td>
+              <a th:href="@{/newspaper/__${newspaper.id}__}" th:text="${newspaper.name}">[NAME]</a>
+            </td>
+            <td>
+              <ul th:each="ad : ${newspaper.ads}">
+                <li>
+                  <a th:href="@{/ad/__${ad.id}__}" th:text="${ad.name}">[AD]</a>
+                </li>
+              </ul>
 
-      <span th:if="${#lists.isEmpty(newspapers)}" class="info">There are no newspapers. Please create one.</span>
-    </th:block>
+            </td>
+          </tr>
+        </table>
 
-	<hr/>
-	
-	<th:block th:if="${error}">
-		<span th:text="*{error}?: ''" class="error"></span>
-	</th:block>
-	
-	<h3>Create Newspaper</h3>
-	
-	<form action="/newspaper/create" method="POST">
-		<label for="name">Name</label> 
-      <input name="name" type="text" />
+        <span th:if="${#lists.isEmpty(newspapers)}" class="info">There are no newspapers. Please create one.</span>
+      </th:block>
 
-    <label for="ads">Ads</label>
-    <select name="ads" rows="10" multiple="true">
-      <option 
-        th:each="ad : ${ads}"
-        th:text="${ad.name}"
-        th:value="${ad.id}">[ADS]</option>
-    </select>
+  	<hr/>
+  	
+  	<th:block th:if="${error}">
+  		<span th:text="*{error}?: ''" class="error"></span>
+  	</th:block>
+  	
+  	<h3>Create Newspaper</h3>
+  	
+  	<form action="/newspaper/create" method="POST">
+  		<label for="name">Name</label> 
+        <input name="name" type="text" />
 
-    <br/>
-    <label for="submit"/>
-    <input type="submit" value="Create" id="submit" class="button btn btn-primary"/>
-	</form>
+      <label for="ads">Ads</label>
+      <select name="ads" rows="10" multiple="true">
+        <option 
+          th:each="ad : ${ads}"
+          th:text="${ad.name}"
+          th:value="${ad.id}">[ADS]</option>
+      </select>
+
+      <br/>
+      <label for="submit"/>
+      <input type="submit" value="Create" id="submit" class="button btn btn-primary"/>
+  	</form>
+  </div> <!-- end page content -->
   </body>
 </html>

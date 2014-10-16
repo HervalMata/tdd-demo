@@ -124,5 +124,6 @@ public class NewspaperControllerTest extends BaseControllerTest {
 				xpath("//table//td/ul/li/a[contains(@href, '/ad/')][text()='" + mockAd1Name + "']").exists())
 			.andExpect(
 				xpath("//table//td/ul/li/a[contains(@href, '/ad/')][text()='" + mockAd2Name + "']").exists());
+		
 	}
 }

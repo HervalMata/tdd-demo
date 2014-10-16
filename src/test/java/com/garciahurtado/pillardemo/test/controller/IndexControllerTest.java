@@ -25,6 +25,8 @@ public class IndexControllerTest extends BaseControllerTest {
 		mvc.perform(get("/"))
 				.andExpect(status().isOk())
 				.andExpect(content().string(
+						containsString("href=\"/\"")))
+				.andExpect(content().string(
 						containsString("href=\"/ad/\"")))
 				.andExpect(content().string(
 						containsString("href=\"/newspaper/\"")));
