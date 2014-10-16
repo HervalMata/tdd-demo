@@ -40,6 +40,18 @@ public class NewspaperModelTest {
 	String dbNewspaperName = "TEST - DB Mock Newspaper"; //
 	
 	@Test
+	public void testNoNameThrowsException(){
+		exception.expect(IllegalArgumentException.class);
+		NewspaperModel newspaper = new NewspaperModel("");
+	}
+	
+	@Test
+	public void testEmptyNameThrowsException(){
+		exception.expect(IllegalArgumentException.class);
+		NewspaperModel newspaper = new NewspaperModel("  ");
+	}
+	
+	@Test
 	public void testInvalidNameThrowsException(){
 		exception.expect(IllegalArgumentException.class);
 		NewspaperModel newspaper = new NewspaperModel("*&%^!#(");

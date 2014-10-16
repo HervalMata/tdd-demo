@@ -19,6 +19,7 @@ import java.util.Set;
 
 
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,6 +52,10 @@ public class AdModel {
 	}
 	
 	public AdModel(String name){
+		if(name.trim().isEmpty()){
+			throw new IllegalArgumentException("Please provide a name");
+		}
+		
 		// TODO: externalize name regexp into custom validator 
 		// Only Alphanumeric, space and dash are allowed
 		if(!name.matches("^[a-zA-Z0-9-\\s]*$")){

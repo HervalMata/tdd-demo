@@ -36,6 +36,10 @@ public class NewspaperModel {
 	}
 
 	public NewspaperModel(String name) {
+		if(name.trim().isEmpty()){
+			throw new IllegalArgumentException("Please provide a name");
+		}
+		
 		// TODO: externalize name regexp into custom validator 
 		// Only Alphanumeric, space and dash are allowed
 		if(!name.matches("^[a-zA-Z0-9-\\s]*$")){

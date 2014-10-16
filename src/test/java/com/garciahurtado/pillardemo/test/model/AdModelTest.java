@@ -33,7 +33,18 @@ public class AdModelTest {
 	@Resource private NewspaperService newsDb;
 	
 	String dbAdName = "TEST - DB Mock Ad Campaign"; //
+
+	@Test
+	public void testNoNameThrowsException(){
+		exception.expect(IllegalArgumentException.class);
+		AdModel ad = new AdModel("");
+	}
 	
+	@Test
+	public void testEmptyNameThrowsException(){
+		exception.expect(IllegalArgumentException.class);
+		AdModel ad = new AdModel("  ");
+	}
 	
 	@Test
 	public void testInvalidNameThrowsException(){
