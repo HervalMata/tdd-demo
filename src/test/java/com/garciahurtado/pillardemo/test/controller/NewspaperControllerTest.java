@@ -2,12 +2,14 @@ package com.garciahurtado.pillardemo.test.controller;
 
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
+
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.springframework.test.annotation.DirtiesContext.*;
+import org.springframework.test.web.servlet.MvcResult;
 
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD) // Deletes mock data after each test to prevent test contamination
 public class NewspaperControllerTest extends BaseControllerTest {
@@ -110,8 +112,8 @@ public class NewspaperControllerTest extends BaseControllerTest {
 		mvc.perform(
 			post("/newspaper/create") // simulate form submission
 		        .param("name", newspaperName)
-		        .param("ad", ids[0].toString())
-		        .param("ad", ids[1].toString())	)
+		        .param("ads", ids[0].toString())
+		        .param("ads", ids[1].toString())	)
 			.andExpect(
 			    status().isMovedTemporarily());  // test redirect
 			

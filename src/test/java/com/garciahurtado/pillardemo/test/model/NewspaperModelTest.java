@@ -35,6 +35,7 @@ public class NewspaperModelTest {
 	@Mock AdModel ad3;
 
 	@Resource private NewspaperService db;
+	@Resource private AdService adDb;
 	
 	Long dbNewspaperId = 777L; // Mock AdId used to save and retrieve from DB
 	String dbNewspaperName = "TEST - DB Mock Newspaper"; //
@@ -70,7 +71,6 @@ public class NewspaperModelTest {
 		assertEquals(ads.size(), 0);
 		
 		newspaper.addAd(createAd("Ad 1"));
-		
 		assertEquals(ads.size(), 1);
 		
 		newspaper.addAd(createAd("Ad 2"));
@@ -108,9 +108,19 @@ public class NewspaperModelTest {
 	 */
 	private NewspaperModel createNewspaper(String name){
 		NewspaperModel news = new NewspaperModel(name);
-		news.addAd(createAd("Ad 1"));
-		news.addAd(createAd("Ad 2"));
-		news.addAd(createAd("Ad 3"));
+		
+		ad1 = createAd("Ad 1");
+		ad2 = createAd("Ad 2");
+		ad3 = createAd("Ad 3");
+
+		// Ads must be persisted before adding to Newspaper to avoid hibernate errors
+		adDb.create(ad1);
+		adDb.create(ad2);
+		adDb.create(ad3);
+		
+		news.addAd(ad1);
+		news.addAd(ad2);
+		news.addAd(ad3);
 		
 		return news;
 	}

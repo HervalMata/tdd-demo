@@ -20,11 +20,7 @@ import com.garciahurtado.pillardemo.service.NewspaperService;
 
 @Controller
 @ContextConfiguration(locations = {"classpath:spring-config.xml"})
-public class AdController {
-	@Autowired private AdService adFinder;
-	@Autowired private NewspaperService newsFinder;
-	
-	static final Logger logger = Logger.getLogger(IndexController.class); 
+public class AdController extends BaseController {
 	
 	/**
 	 * Shows a list of existing Ads and a form to create new Ads
@@ -65,9 +61,7 @@ public class AdController {
 				}
 			}
 			
-			// Persist the newly created Ad
 			adFinder.create(ad);
-			logger.info("New Ad Saved");
 			return "redirect:/ad/";
 		} catch(Exception e) {
 			logger.warn("There was a problem saving the ad: " + e.getMessage());

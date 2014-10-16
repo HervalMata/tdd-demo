@@ -19,6 +19,7 @@ import com.garciahurtado.pillardemo.service.AdService;
 import com.garciahurtado.pillardemo.service.NewspaperService;
 
 @Controller
+@ContextConfiguration(locations = {"classpath:spring-config.xml"})
 public class NewspaperController extends BaseController {
 	
 	/**
@@ -53,16 +54,14 @@ public class NewspaperController extends BaseController {
 			NewspaperModel newspaper = new NewspaperModel(name);
 			
 			if(ads != null){
-				for (String newspaperId : ads) {
-					Long id = Long.parseLong(newspaperId, 10);
+				for (String adId : ads) {
+					Long id = Long.parseLong(adId, 10);
 			    	newspaper.addAd(adFinder.findById( id ));
 			    	logger.info("Added Ad to Newspaper");
 				}
 			}
 			
-			// Persist the newly created Ad
 			newsFinder.create(newspaper);
-			logger.info("New Ad Saved");
 			return "redirect:/newspaper/";
 		} catch(Exception e) {
 			logger.warn("There was a problem saving the newspaper: " + e.getMessage());

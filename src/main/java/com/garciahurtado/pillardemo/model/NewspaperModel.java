@@ -27,9 +27,9 @@ public class NewspaperModel {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ads_to_newspapers", joinColumns = { @JoinColumn(name ="newspapers_id") }, inverseJoinColumns = { @JoinColumn(name = "ads_id") })
-	private Set<AdModel> ads;
+	private Set<AdModel> ads = new HashSet<AdModel>();
 	
 	public NewspaperModel(){
 		
