@@ -19,19 +19,14 @@ import com.garciahurtado.pillardemo.service.AdService;
 import com.garciahurtado.pillardemo.service.NewspaperService;
 
 @Controller
-@ContextConfiguration(locations = {"classpath:spring-config.xml"})
-public class AdController {
-	@Autowired private AdService adFinder;
-	@Autowired private NewspaperService newsFinder;
-	
-	static final Logger logger = Logger.getLogger(IndexController.class); 
+public class NewspaperController extends BaseController {
 	
 	/**
-	 * Shows a list of existing Ads and a form to create new Ads
+	 * Shows a list of existing Newspapers and a form to create newspapers
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/ad")
+	@RequestMapping("/newspaper")
 	public String index(Model model){
 		List<AdModel> adList = adFinder.findAll();
 		List<NewspaperModel> newspaperList = newsFinder.findAll();
@@ -39,41 +34,41 @@ public class AdController {
 		model.addAttribute("ads", adList);
 		model.addAttribute("newspapers", newspaperList);
 		
-		return "ad-list";
+		return "newspaper-list";
 	}
 	
 	/**
-	 * Handle creation of a new Ad object via POST
-	 * @param name Name of the new Ad
-	 * @param newspapers (optional) List of Newspapers to associate with this Ad
+	 * Handle creation of a new newspaper object via POST
+	 * @param name Name of the newspaper
+	 * @param ads (optional) List of ads to associate with this newspaper
 	 */
-	@RequestMapping(value="/ad/create", method=RequestMethod.POST)
+	@RequestMapping(value="/newspaper/create", method=RequestMethod.POST)
 	public String create(
 			@RequestParam("name") String name, 
-			@RequestParam(value="newspapers", required = false) String[] newspapers,
+			@RequestParam(value="ads", required = false) String[] ads,
 			Model model){
 		
 		// TODO: Change to use validators!
 		try{
-			AdModel ad = new AdModel(name);
+			NewspaperModel newspaper = new NewspaperModel(name);
 			
-			if(newspapers != null){
-				for (String newspaperId : newspapers) {
+			if(ads != null){
+				for (String newspaperId : ads) {
 					Long id = Long.parseLong(newspaperId, 10);
-			    	ad.addNewspaper(newsFinder.findById( id ));
-			    	logger.info("Added Newspaper to Ad");
+			    	newspaper.addAd(adFinder.findById( id ));
+			    	logger.info("Added Ad to Newspaper");
 				}
 			}
 			
 			// Persist the newly created Ad
-			adFinder.create(ad);
+			newsFinder.create(newspaper);
 			logger.info("New Ad Saved");
-			return "redirect:/ad/";
+			return "redirect:/newspaper/";
 		} catch(Exception e) {
-			logger.warn("There was a problem saving the ad: " + e.getMessage());
+			logger.warn("There was a problem saving the newspaper: " + e.getMessage());
 			model.addAttribute("error", e.getMessage());
 			
-			return "ad-list";
+			return "newspaper-list";
 		}
 		
 	}

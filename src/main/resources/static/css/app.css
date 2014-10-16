@@ -87,6 +87,10 @@ table th {
   background-color: #555;
 }
 
+table tr {
+  border-top: 1px solid #272b30;
+}
+
 
 /* Forms ----------------------------------*/
 

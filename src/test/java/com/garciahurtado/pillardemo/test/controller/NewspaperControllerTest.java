@@ -36,7 +36,7 @@ public class NewspaperControllerTest extends BaseControllerTest {
 			.andExpect(
 				status().isOk())
 			.andExpect(
-				xpath("//span[text()='There are no Newspapers. Please create one.']").exists());
+				xpath("//span[text()='There are no newspapers. Please create one.']").exists());
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class NewspaperControllerTest extends BaseControllerTest {
 		// Insert three mock models into the DB and capture their IDs
 		Long[] ids = this.createNewspapers();
 		
-		// xpath expression which we will use to find each mock Ad in the response HTML 
+		// xpath expression which we will use to find each mock in the response HTML 
 		String xpathTest = "//table//td/a[@href='/newspaper/%s'][text()='%s']";
 		
 		mvc.perform(get("/newspaper/"))
@@ -99,12 +99,12 @@ public class NewspaperControllerTest extends BaseControllerTest {
 	
 	
 	/**
-	 * Check that we can create a new ad with newspapers by submitting a POST request to the
-	 * AdController, then check we receive a "success" message and a valid display of the new ad 
+	 * Check that we can create a newspaper with ads by submitting a POST request to the
+	 * NewspaperController, then check we receive a "success" message and a valid display of the newspaper 
 	 */
 	@Test
-	public void testCanCreateAd() throws Exception {		
-		Long[] ids = this.createNewspapers();
+	public void testCanCreateNewspaper() throws Exception {		
+		Long[] ids = this.createAds();
 		String newspaperName = "Newly Created Newspaper";
 		
 		mvc.perform(
@@ -119,7 +119,7 @@ public class NewspaperControllerTest extends BaseControllerTest {
 		// Now, check the resulting page for the newspaper we just created (and related ads)
 		mvc.perform(get("/newspaper/"))
 			.andExpect(
-				xpath("//table//td/a[contains(@href, '/ad/')][text()='" + newspaperName + "']").exists())
+				xpath("//table//td/a[contains(@href, '/newspaper/')][text()='" + newspaperName + "']").exists())
 			.andExpect(
 				xpath("//table//td/ul/li/a[contains(@href, '/ad/')][text()='" + mockAd1Name + "']").exists())
 			.andExpect(

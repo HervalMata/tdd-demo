@@ -8,54 +8,53 @@
   </head>
   <body>
     <h1>Acme Ad Manager</h1>
-
+    
     <!-- hide list of newspapers if we received an error -->
     <th:block th:if="${#strings.isEmpty(error)}">
+      <h2>Newspaper List</h2>
 
-      <h2>Ad List</h2>
-      
-      <!-- Only show the table if there are Ads in the app -->
-      <table th:if="${not #lists.isEmpty(ads)}">
+      <!-- Only show the table if there are newspapers -->
+      <table th:if="${not #lists.isEmpty(newspapers)}">
         <tr>
-          <th>Ad Name</th>
-          <th>Newspapers</th>
+          <th>Newspaper</th>
+          <th>Ads</th>
         </tr>
-        <tr th:each="ad : ${ads}">
+        <tr th:each="newspaper : ${newspapers}">
           <td>
-            <a th:href="@{/ad/__${ad.id}__}" th:text="${ad.name}">[NAME]</a>
+            <a th:href="@{/newspaper/__${newspaper.id}__}" th:text="${newspaper.name}">[NAME]</a>
           </td>
           <td>
-            <ul th:each="newspaper : ${ad.newspapers}">
+            <ul th:each="ad : ${newspaper.ads}">
               <li>
-                <a th:href="@{/newspaper/__${newspaper.id}__}" th:text="${newspaper.name}">[NEWSPAPER]</a>
+                <a th:href="@{/ad/__${ad.id}__}" th:text="${ad.name}">[AD]</a>
               </li>
             </ul>
 
           </td>
         </tr>
       </table>
-      
-      <span th:if="${#lists.isEmpty(ads)}" class="info">There are no ads. Please create one.</span>
 
+      <span th:if="${#lists.isEmpty(newspapers)}" class="info">There are no newspapers. Please create one.</span>
     </th:block>
+
 	<hr/>
 	
-	<th:block layout:fragment="content" th:if="${error}">
+	<th:block th:if="${error}">
 		<span th:text="*{error}?: ''" class="error"></span>
 	</th:block>
 	
-	<h3>Create New Ad</h3>
+	<h3>Create Newspaper</h3>
 	
-	<form action="/ad/create" method="POST">
+	<form action="/newspaper/create" method="POST">
 		<label for="name">Name</label> 
       <input name="name" type="text" />
 
-    <label for="newspapers">Newspapers</label>
-    <select name="newspapers" rows="10" multiple="true">
+    <label for="ads">Ads</label>
+    <select name="ads" rows="10" multiple="true">
       <option 
-        th:each="newspaper : ${newspapers}"
-        th:text="${newspaper.name}"
-        th:value="${newspaper.id}">[NEWSPAPERS]</option>
+        th:each="ad : ${ads}"
+        th:text="${ad.name}"
+        th:value="${ad.id}">[ADS]</option>
     </select>
 
     <br/>
