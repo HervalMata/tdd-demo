@@ -113,37 +113,46 @@
 
 	<build>
 		<finalName>pillar-demo</finalName>
-		
+
 		<plugins>
-		
-		<!-- TODO: This is a hack to make sure the templates and other resources from the main project 
-			end up in the test classpath so that tests won't fail due to missing templates in build dir -->
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-resources-plugin</artifactId>
-			<executions>
-				<execution>
-					<id>additional-resources</id>
-					<phase>process-test-resources</phase>
-					<goals>
-						<goal>copy-resources</goal>
-					</goals>
-					<configuration>
-						<resources>
-							<resource>
-								<directory>${project.basedir}/src/main/resources/</directory>
-							</resource>
-						</resources>
-						<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
-					</configuration>
-				</execution>
-				
-			</executions>
-		</plugin>
+
+			<!-- TODO: This is a hack to make sure the templates and other resources 
+				from the main project end up in the test classpath so that tests won't fail 
+				due to missing templates in build dir -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>additional-resources</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/src/main/resources/</directory>
+								</resource>
+							</resources>
+							<outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

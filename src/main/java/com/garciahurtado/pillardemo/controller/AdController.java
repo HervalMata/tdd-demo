@@ -26,6 +26,11 @@ public class AdController {
 	
 	static final Logger logger = Logger.getLogger(IndexController.class); 
 	
+	/**
+	 * Shows a list of existing Ads and a form to create new Ads
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/ad")
 	public String index(Model model){
 		List<AdModel> adList = adFinder.findAll();
