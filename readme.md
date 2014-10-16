@@ -7,7 +7,7 @@ The app includes two main pages which allow the management of Ads and Newspapers
 ## Technologies used
 
 ## Web Stack
-- Java 7
+- **Java 7**
 - **Spring MVC**: As the most popular J2EE framework, Spring provides one of the most accessible learning curves of its domain. The Spring project embraces unit testing and provides great facilities for unit testing integration, mock creation and advanced assertion libraries. 
 - **Hibernate / JPA**: The standard ORM for J2EE.
 - **jUnit**: Standard unit testing framework. Integrates very nicely with Eclipse IDE to enable true TDD development process.
